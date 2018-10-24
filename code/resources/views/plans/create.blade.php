@@ -25,7 +25,7 @@
     </div>
     <div class="form-group row">
         <div class="offset-sm-2 col-sm-4">
-            <img id="img" src="{{asset('images/plans/plan2.jpg')}}" width="100%">
+            <img id="img" src="{{asset('images/plans/default.png')}}" width="300px" height="300px">
         </div>
         <div class="col-sm-6">
             <div id="map"></div>

@@ -56,7 +56,7 @@ Route::post('/plans/test',[
 
 
 
-Route::get('/users/{id}',[
+Route::get('/users/{id}',[ 
     'as'=>'users.show', 
     'uses'=>'UserController@show'
 ]);

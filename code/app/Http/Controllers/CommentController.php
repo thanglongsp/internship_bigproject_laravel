@@ -11,7 +11,7 @@ class CommentController extends Controller
     public function destroy($id)
     {
         $road = Comment::find($id);
-        $road->delete();
+        $road->delete(); 
         return redirect()->route('plans.index'); //có thể sửa nếu cần thiết
     }
  
