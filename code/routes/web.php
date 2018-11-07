@@ -1,5 +1,5 @@
 <?php
- 
+  
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -78,6 +78,11 @@ Route::post('/comments',[
 	'as'=>'comments.store',
 	'uses'=>'CommentController@store'
 ]);
+Route::post('/comments/edit/{id}',[
+	'as'=>'comments.edit',
+	'uses'=>'CommentController@edit'
+]);
+
 
 Route::get('/comments/destroy/{id}/{planId}',[
 	'as'	=>	'comments.destroy',
@@ -100,6 +105,3 @@ Route::post('/plans/{id}/request/{userId}', [
 	'as' => 'store_request',
 	'uses' => 'PlanController@storeRequest'
 ]);
-
-// comment
-Route::get('/destroy/comment/{id}','CommentController@destroy');

@@ -132,14 +132,35 @@
                         @endif
                         <div class="panel-heading">
                             <p class="panel-title">
-                                <a class="btn btn-link" data-toggle="collapse" data-parent="#accordion" href="#{{$comment->id}}" data-toggle="tooltip" title="Các câu trả lời" >{{$comment->replies->count()}} <i class="fas fa-reply"></i></a>
+                                <a class="btn btn-link" data-toggle="collapse" data-parent="#accordion" href="#rep{{$comment->id}}" data-toggle="tooltip" title="Các câu trả lời" >{{$comment->replies->count()}} <i class="fas fa-reply"></i></a>
                                 @if($comment->user_id == Auth::user()->id)
                                 <a class="btn btn-link text-danger" href="{{route('comments.destroy',[$comment->id,$plan->id])}}" data-toggle="tooltip" title="Xóa bình luận"><i class="far fa-trash-alt"></i></a>
-                                <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Sửa bình luận"><i class="fas fa-pencil-alt"></i></a>
+                                <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#{{$comment->id}}" title="Sửa bình luận"><i class="fas fa-pencil-alt"></i></a>
+                                <!-- Modal -->
+                                  <div class="modal fade" id="{{$comment->id}}" role="dialog">
+                                    <div class="modal-dialog">
+                                    
+                                      <!-- Modal content-->
+                                      <div class="modal-content">
+                                        <div class="modal-body">
+                                          <p>Edit comment</p>
+                                          <form method="post" action="{{route('comments.edit',$comment->id)}}">
+                                            @csrf
+                                                <input type="text" class="form-control" name="{{$comment->id}}" value="{{$comment->content}}"/>
+                                                <button type="submit" class="btn btn-outline-secondary">Submit</a>
+                                            </form> 
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                      </div>
+                                      
+                                    </div>
+                                  </div>
                                 @endif
                             </p>
                         </div>
-                        <div id="{{$comment->id}}" class="panel-collapse collapse">
+                        <div id="rep{{$comment->id}}" class="panel-collapse collapse">
                             @foreach( $comment->replies as $reply )
                             <div class="media mt-3">
                                 <a class="pr-3" href="{{route('users.show',$reply->user->id)}}">
@@ -160,7 +181,28 @@
                                         <p class="panel-title">
                                             @if($reply->user_id == Auth::user()->id)
                                             <a class="btn btn-link text-danger" href="{{route('comments.destroy',[$reply->id,$reply->plan_id])}}" data-toggle="tooltip" title="Xóa bình luận"><i class="far fa-trash-alt"></i></a>
-                                            <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Sửa bình luận"><i class="fas fa-pencil-alt"></i></a>
+                                            <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#{{$reply->id}}" title="Sửa bình luận"><i class="fas fa-pencil-alt"></i></a>
+                                            <!-- Modal -->
+                                              <div class="modal fade" id="{{$reply->id}}" role="dialog">
+                                                <div class="modal-dialog">
+                                                
+                                                  <!-- Modal content-->
+                                                  <div class="modal-content">
+                                                    <div class="modal-body">
+                                                      <p>Edit comment</p>
+                                                      <form method="post" action="{{route('comments.edit',$reply->id)}}">
+                                                        @csrf
+                                                            <input type="text" class="form-control" name="{{$reply->id}}" value="{{$reply->content}}"/>
+                                                            <button type="submit" class="btn btn-outline-secondary">Submit</a>
+                                                        </form> 
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                  </div>
+                                                  
+                                                </div>
+                                              </div>
                                             @endif
                                         </p>
                                     </div>

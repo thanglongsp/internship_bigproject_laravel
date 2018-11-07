@@ -14,6 +14,16 @@ class CommentController extends Controller
         $cmt->delete(); 
         return redirect()->route('plans.show',$planId); //có thể sửa nếu cần thiết
     }
+
+    public function edit(Request $request, $id)
+    {
+        $cmt = Comment::find($id);
+        $cmt->content = $request->$id;
+        $cmt->save();
+
+        return redirect()->route('plans.show', $id);
+        // dd($request->$id);
+    }
  
     public function store(Request $request)
     {
