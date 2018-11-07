@@ -13,7 +13,7 @@
 <div class="container-fluid mb-3">
     <div class="row"> 
         <div class="offset-sm-1 col-sm-4"> 
-            <h1>{{$plan->name}}</h1>
+            <h1>{{$plan->name}}</h1> 
         </div>
         <div class="col-sm-3 ml-auto">
             <!-- Dành cho người muốn tham gia hay theo dõi kế hoạch -->
@@ -22,13 +22,13 @@
                 @if($auth_user->requests()->where('plan_id', $plan->id)->first() == null)
                     <form method="post" action="{{route('store_request', [$plan->id, $auth_user->id])}}">
                         @csrf
-                        <button type="submit" class="btn btn-outline-primary">Xin tham gia</button>
+                        <button type="submit" class="btn btn-outline-primary" style="height:38px;width:110px">Xin tham gia</button>
                     </form>
                     {{-- Nếu chưa follow --}}
                     @if($auth_user->plans()->where('plan_id', $plan->id)->wherePivot('role', 2)->first() == null)
                         <form method="post" action="{{route('follow', [$plan->id, $auth_user->id])}}">
                             @csrf
-                            <button type="submit" class="btn btn-outline-secondary">Theo dõi</a>
+                            <button type="submit" class="btn btn-outline-secondary" style="height:38px;width:110px">Theo dõi</a>
                         </form>  
                     @else
                         <button type="button" class="btn btn-outline-secondary">Đang theo dõi</a>
@@ -58,7 +58,7 @@
         </div>
         <div class="row">
             <div class="offset-sm-1 col-sm-4">
-                <img src="{{asset('images/plans/'.$plan->picture)}}" width="100%"><!--Hình ảnh xem trước-->
+                <img src="{{asset('images/plans/'.$plan->picture)}}" width="400px" height="300px"><!--Hình ảnh xem trước-->
             </div>
             <div class="col-sm-6">
                 <div id="map"></div>
@@ -126,14 +126,17 @@
                         <br>
                         @if($comment->picture != null)
                         @foreach(explode(', ',$comment->picture) as $picture)
-                        <img class="mr-3 img-responsive" src="{{asset('images/comments/'.$picture)}}" width="320px" height="250px" alt="Generic placeholder image">
+                        <img class="mr-3 img-responsive" src="{{asset('images/comments/'.$picture)}}" width="200px" height="150px" alt="Generic placeholder image">
 
                         @endforeach
                         @endif
                         <div class="panel-heading">
                             <p class="panel-title">
                                 <a class="btn btn-link" data-toggle="collapse" data-parent="#accordion" href="#{{$comment->id}}" data-toggle="tooltip" title="Các câu trả lời" >{{$comment->replies->count()}} <i class="fas fa-reply"></i></a>
-                                <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Xóa bình luận"><i class="far fa-trash-alt"></i></a>
+                                @if($comment->user_id == Auth::user()->id)
+                                <a class="btn btn-link text-danger" href="{{route('comments.destroy',[$comment->id,$plan->id])}}" data-toggle="tooltip" title="Xóa bình luận"><i class="far fa-trash-alt"></i></a>
+                                <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Sửa bình luận"><i class="fas fa-pencil-alt"></i></a>
+                                @endif
                             </p>
                         </div>
                         <div id="{{$comment->id}}" class="panel-collapse collapse">
@@ -149,13 +152,16 @@
                                     <br>
                                     @if($reply->picture != null)
                                     @foreach(explode(', ',$reply->picture) as $picture)
-                                    <img class="mr-3 img-responsive" src="{{asset('images/comments/'.$picture)}}" width="320px" height="250px"  alt="Generic placeholder image">
+                                    <img class="mr-3 img-responsive" src="{{asset('images/comments/'.$picture)}}" width="200px" height="150px"  alt="Generic placeholder image">
 
                                     @endforeach
                                     @endif
                                     <div class="panel-heading">
                                         <p class="panel-title">
-                                            <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Xóa bình luận"><i class="far fa-trash-alt"></i></a>
+                                            @if($reply->user_id == Auth::user()->id)
+                                            <a class="btn btn-link text-danger" href="{{route('comments.destroy',[$reply->id,$reply->plan_id])}}" data-toggle="tooltip" title="Xóa bình luận"><i class="far fa-trash-alt"></i></a>
+                                            <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Sửa bình luận"><i class="fas fa-pencil-alt"></i></a>
+                                            @endif
                                         </p>
                                     </div>
                                 </div>

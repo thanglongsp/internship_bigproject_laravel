@@ -9,7 +9,7 @@ use App\Road;
 use App\Slide;
 use App\User;
 use App\Request as JoinRequest;
-use Carbon\Carbon;
+use Carbon\Carbon; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
 
@@ -22,7 +22,7 @@ class PlanController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
     public function index()
     {
@@ -181,6 +181,7 @@ class PlanController extends Controller
         $road->action       = $request->action;
 
         $road->save();
+        // return redirect()->route('plans.show', $request->plan_id);
     }
 
     public function addRoute(Request $request)

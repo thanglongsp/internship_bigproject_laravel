@@ -53,7 +53,7 @@ $(document).ready(function() {
 
 // Lấy ảnh từ cam máy tính.
 function takePicture(clicked_value){
-    alert(clicked_value);
+    //alert(clicked_value);
     if(clicked_value == 'comment'){
         var player = document.getElementById('player');
         var canvas = document.getElementById('canvasComment');

@@ -23,17 +23,6 @@
           <a class="nav-link" href="{{route('plans.create')}}" data-toggle="tooltip" title="Thêm kế hoạch"><i class="fas fa-plus-circle"></i></a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link notifications" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-bell"></i>
-            <span class="button__badge">5</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="javascript:void(0)">Quân đẹp trai vừa đá bạn ra khỏi kế hoạch</a>
-            <a class="dropdown-item" href="javascript:void(0)">NamNP đã chấp nhận cho bạn tham gia kế hoạch</a>
-            <a class="dropdown-item" href="javascript:void(0)">Long SP đang theo dõi bạn</a>
-          </div>
-        </li>
-        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="{{route('users.show',Auth::user()->id)}}">Trang cá nhân</a>

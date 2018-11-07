@@ -1,5 +1,5 @@
 <?php
-
+ 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,12 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */ 
- 
+  
 Auth::routes(); 
 // Common 
 Route::get('/','PageController@index');
 Route::get('/hottestPlans','PageController@hottestPlans');
-Route::get('/latestUsers','PageController@latestUsers');
+Route::get('/latestUsers','PageController@latestUsers'); 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home'); 
@@ -79,6 +79,11 @@ Route::post('/comments',[
 	'uses'=>'CommentController@store'
 ]);
 
+Route::get('/comments/destroy/{id}/{planId}',[
+	'as'	=>	'comments.destroy',
+	'uses'	=>	'CommentController@destroy'
+]);
+
 Route::get('/search','PlanController@search');
 
 Route::post('/plans/{id}/joiner-management', [
@@ -95,3 +100,6 @@ Route::post('/plans/{id}/request/{userId}', [
 	'as' => 'store_request',
 	'uses' => 'PlanController@storeRequest'
 ]);
+
+// comment
+Route::get('/destroy/comment/{id}','CommentController@destroy');

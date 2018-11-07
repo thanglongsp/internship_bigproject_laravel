@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row"> 
         <label class="col-sm-2 col-form-label">Ảnh</label>
         <div class="form-group col-sm-10">
             <div class="">
@@ -33,7 +33,7 @@
     </div> 
     <div class="form-group row">
         <div class="offset-sm-2 col-sm-4">
-            <img id="img" src="{{asset('images/plans/'.$plan->picture)}}" width="100%">
+            <img id="img" src="{{asset('images/plans/'.$plan->picture)}}" width="350px" height="300px">
         </div>
         <div class="col-sm-6">
             <div id="map"></div>
@@ -140,7 +140,7 @@ function getValue(clicked_id){
 
     document.getElementById('order_number').value = clicked_id;
 
-    alert(document.getElementById('order_number').value);
+    //alert(document.getElementById('order_number').value);
 
 }
 
@@ -213,7 +213,7 @@ function updateRoute(){
         },
         success: function(data) {
             alert('Updated success!');
-            //console.log(data);
+            console.log(data);
         },
         error: function(data) {
             console.log(data);

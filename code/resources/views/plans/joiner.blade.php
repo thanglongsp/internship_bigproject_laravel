@@ -17,7 +17,7 @@
             <h1>{{$plan->name}}</h1>
         </div>
         <div class="col-sm-3 ml-auto">
-            <!-- Dành cho người muốn tham gia hay theo dõi kế hoạch -->
+            <!-- Dành cho người muốn tham gia hay theo dõi kế hoạch --> 
             @if($user->id != Auth::user()->id)
             <a href="javascript:void(0)" class="btn btn-outline-success">Xin tham gia</a>
             <a href="javascript:void(0)" class="btn btn-outline-primary">Theo dõi</a>
@@ -34,7 +34,7 @@
         </div>
         <div class="row">
             <div class="offset-sm-1 col-sm-4">
-                <img src="{{asset('images/plans/'.$plan->picture)}}" width="100%"><!--Hình ảnh xem trước-->
+                <img src="{{asset('images/plans/'.$plan->picture)}}" width="400px" height="300px"><!--Hình ảnh xem trước-->
             </div>
             <div class="col-sm-6">
                 <div id="map"></div>
