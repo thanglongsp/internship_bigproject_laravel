@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Road;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \App\Http\Requests\UpdateAccountRequest;
@@ -81,6 +82,7 @@ class UserController extends Controller
         $user        = User::find($id);
         $user->name  = $request->get('inputName');
         $user->email = $request->get('inputEmail');
+        $user->gender = $request->get('inputGender');
         $birthday = date_create_from_format('m/d/Y', $request->get('birthday'));
 
         if ($birthday != null) {

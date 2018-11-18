@@ -32,13 +32,26 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="birthday" class="col-sm-2 col-form-label">Ngày sinh:</label>
+                    <label for="birthday" class="col-sm-2 col-form-label">Ngày sinh :</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="birthday" name="birthday" value="{{ date('m/d/Y', strtotime(Auth::user()->birthday)) }}"><!--validate cho trường này do đổi type-->
                     </div>
                 </div>
+                <div class="form-group row"> 
+                    <label for="inputGender" class="col-sm-2 col-form-label">Giới tính:</label>
+                    <div class="col-sm-10">
+                        @if(Auth::user()->gender == 1)
+                            <input type="radio" name ="inputGender" value="1" checked>Nam</input>
+                            <input type="radio" name ="inputGender" value="2">Nữ</input>
+                        @endif
+                        @if(Auth::user()->gender == 2)
+                            <input type="radio" name ="inputGender" value="1">Nam </input>
+                            <input type="radio" name ="inputGender" value="2" checked>Nữ</input>
+                        @endif 
+                    </div>
+                </div>
                 <div class="form-group row">
-                    <label for="phone-number" class="col-sm-2 col-form-label">Số điện thoại</label>
+                    <label for="phone-number" class="col-sm-2 col-form-label">Số điện thoại :</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="phone_number" placeholder="Số điện thoại" value="{{ Auth::user()->phone_number }}">
                     </div>
@@ -54,7 +67,8 @@
                     <div class="col-sm-10">
                         <input type="password" class="form-control" name="inputPassword_confirmation" placeholder="Re-enter password">
                     </div>
-                </div> 
+                </div>
+                </br> 
                 <div class="form-group row">
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-primary">

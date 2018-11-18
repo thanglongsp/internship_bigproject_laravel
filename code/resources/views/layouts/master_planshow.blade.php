@@ -18,7 +18,8 @@
 	<script src="{{ asset('js/data.js') }}"></script>
 	<script src="{{ asset('js/datepicker.js') }}"></script>
 	<script src="{{ asset('js/jquery.datetimepicker.full.min.js')}}"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxouibC2C2AIc9VjH3DuziTdSEvPOIthQ&libraries=visualization&callback=initMap" async defer></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpGHsAh1waDeLl12FFWPL0eoLWOri31WQ&libraries=visualization&callback=initMap" async defer></script>
+	<link rel="stylesheet" href="{{asset('css/user.css')}}">
 	<link rel="stylesheet" href="{{asset('css/app.css')}}">
 	<link rel="stylesheet" href="{{asset('css/bootstrap-datepicker.css')}}">
 	<link rel="stylesheet" href="{{asset('css/jquery.datetimepicker.min.css')}}">

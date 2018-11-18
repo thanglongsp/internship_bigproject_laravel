@@ -17,7 +17,7 @@
                 </ul>
             </div>
         </div>
-        <div class='col-sm-10' style="margin-bottom:10px">
+        <div class='col-sm-10' style="margin-bottom:10px" id="myTarget"> 
         @foreach($plans as $plan)
             <div class="card">
                 <h5 class="card-header">{{$plan->name}}</h5>

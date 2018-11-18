@@ -1,8 +1,8 @@
 <?php
-
+  
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Web Routes 
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
@@ -10,15 +10,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */ 
- 
+  
 Auth::routes(); 
 // Common 
-Route::get('/','PageController@index');
+Route::get('/','PageController@index'); 
 Route::get('/hottestPlans','PageController@hottestPlans');
-Route::get('/latestUsers','PageController@latestUsers');
+Route::get('/latestUsers','PageController@latestUsers'); 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home'); 
+Route::get('/home', 'HomeController@index')->name('home');  
  
 // Plans 
 Route::resource('plans','PlanController');
@@ -29,6 +29,14 @@ Route::post('/plans/banner/update',[
 	'as'=>'update_banner',
 	'uses'=>'PlanController@updateBanner'
 ]);
+Route::get('/plans/{id}/un_join_request',[
+	'as'=>'un_join_request',
+	'uses'=>'PlanController@unJoinRq'
+	]);
+Route::get('/plans/{id}/un_follow_request',[
+	'as'=>'un_follow_request',
+	'uses'=>'PlanController@unFollowRq'
+	]);
 Route::post('/plans/planname/update',[
 	'as'=>'update_plan_name',
 	'uses'=>'PlanController@updatePlanName'
@@ -41,7 +49,7 @@ Route::post('/plans/route/add',[
 	'as'=>'add_route',
 	'uses'=>'PlanController@addRoute'
 ]);
-Route::get('/plans/route/delete',[
+Route::post('/plans/route/delete',[
 	'as'=>'delete_route',
 	'uses'=>'PlanController@deleteRoute'
 ]);
@@ -53,9 +61,16 @@ Route::post('/plans/test',[
 	'as'=>'plans.test',
 	'uses'=>'PlanController@test'
 ]);
+Route::get('/plans/{id}/turnon',[
+	'as'=>'turn_on_plan',
+	'uses'=>'PlanController@turnOnPlan'
+]);
+Route::get('/plans/{id}/turnoff',[
+	'as'=>'turn_off_plan',
+	'uses'=>'PlanController@turnOffPlan'
+]);
 
-
-
+// Users
 Route::get('/users/{id}',[ 
     'as'=>'users.show', 
     'uses'=>'UserController@show'
@@ -77,6 +92,16 @@ Route::put('/users/{id}',[
 Route::post('/comments',[
 	'as'=>'comments.store',
 	'uses'=>'CommentController@store'
+]);
+Route::post('/comments/edit/{id}',[
+	'as'=>'comments.edit',
+	'uses'=>'CommentController@edit'
+]);
+
+
+Route::get('/comments/destroy/{id}/{planId}',[
+	'as'	=>	'comments.destroy',
+	'uses'	=>	'CommentController@destroy'
 ]);
 
 Route::get('/search','PlanController@search');

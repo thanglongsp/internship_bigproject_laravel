@@ -9,7 +9,7 @@ class Road extends Model
     //
     protected $table = "roads";
     
-    public function plan() {
+    public function plan() { 
         return $this->belongsTo('App\Plan');
     }
 }

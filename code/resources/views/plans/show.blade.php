@@ -13,36 +13,40 @@
 <div class="container-fluid mb-3">
     <div class="row"> 
         <div class="offset-sm-1 col-sm-4"> 
-            <h1>{{$plan->name}}</h1>
+            <h1>{{$plan->name}}</h1> 
         </div>
         <div class="col-sm-3 ml-auto">
-            <!-- Dành cho người muốn tham gia hay theo dõi kế hoạch -->
+            <!-- Dành cho người muốn tham gia hay theo dõi kế hoạch -->  
             @if($user->id != Auth::user()->id)
                 {{-- Nếu chưa có request --}}
                 @if($auth_user->requests()->where('plan_id', $plan->id)->first() == null)
-                    <form method="post" action="{{route('store_request', [$plan->id, $auth_user->id])}}">
+                <span style="float:left;">
+                    <form method="post" action="{{route('store_request', [$plan->id, $auth_user->id])}}" style="height:38px;width:130px">
                         @csrf
-                        <button type="submit" class="btn btn-outline-primary">Xin tham gia</button>
+                        <button type="submit" class="btn btn-outline-primary" style="height:38px;width:130px">Xin tham gia</button>
                     </form>
+                </span>
                     {{-- Nếu chưa follow --}}
                     @if($auth_user->plans()->where('plan_id', $plan->id)->wherePivot('role', 2)->first() == null)
-                        <form method="post" action="{{route('follow', [$plan->id, $auth_user->id])}}">
+                    <span style="float:left;">
+                        <form method="post" action="{{route('follow', [$plan->id, $auth_user->id])}}" style="height:38px;width:130px">
                             @csrf
-                            <button type="submit" class="btn btn-outline-secondary">Theo dõi</a>
+                            <button type="submit" class="btn btn-outline-secondary" style="height:38px;width:130px">Theo dõi</a>
                         </form>  
+                    </span>
                     @else
-                        <button type="button" class="btn btn-outline-secondary">Đang theo dõi</a>
+                    <a href="{{route('un_follow_request', $plan->id)}}"><button type="button" class="btn btn-outline-secondary" style="height:38px;width:130px">Đang theo dõi</button></a>
                     @endif
 
                 @elseif($auth_user->requests()->where('plan_id', $plan->id)->first()->status == 0)
-                    <button type="button" class="btn btn-outline-success">Đã xin tham gia</button>
-                    <button type="button" class="btn btn-outline-secondary">Đang theo dõi</a>
+                    <a href="{{route('un_join_request', $plan->id)}}"><button type="button" class="btn btn-outline-success" style="height:38px;width:130px">Đã xin tham gia</button></a>
+                    <a href="{{route('un_follow_request', $plan->id)}}"><button type="button" class="btn btn-outline-secondary" style="height:38px;width:130px">Đang theo dõi</button></a>
                 @elseif($auth_user->requests()->where('plan_id', $plan->id)->first()->status == 1)
                     <button type="button" class="btn btn-outline-success">Đã tham gia</button>
-                    <button type="button" class="btn btn-outline-secondary">Đang theo dõi</a>
+                    <a href="{{route('un_follow_request', $plan->id)}}"><button type="button" class="btn btn-outline-secondary" style="height:38px;width:130px">Đang theo dõi</button></a>
                 @elseif($auth_user->requests()->where('plan_id', $plan->id)->first()->status == 2)
                     <button type="button" class="btn btn-outline-success">Bị từ chối</button>
-                    <button type="button" class="btn btn-outline-secondary">Đang theo dõi</a>
+                    <a href="{{route('un_follow_request', $plan->id)}}"><button type="button" class="btn btn-outline-secondary" style="height:38px;width:130px">Đang theo dõi<button></a>
                 @endif
 
             @else
@@ -58,7 +62,7 @@
         </div>
         <div class="row">
             <div class="offset-sm-1 col-sm-4">
-                <img src="{{asset('images/plans/'.$plan->picture)}}" width="100%"><!--Hình ảnh xem trước-->
+                <img src="{{asset('images/plans/'.$plan->picture)}}" width="400px" height="300px"><!--Hình ảnh xem trước-->
             </div>
             <div class="col-sm-6">
                 <div id="map"></div>
@@ -66,7 +70,11 @@
         </div>
         <div class="row">
             <div class="offset-sm-1 col-sm-11">
-                Người lập kế hoạch: <a href="javascript:void(0)">{{$user->name}}</a>
+                <br>
+                Người lập kế hoạch: <strong><a href="javascript:void(0)">{{$user->name}}</a></strong>
+                <br>
+                <strong>Lịch trình :</strong>
+                <br>
             </div>
         </div>
         <div class="row">
@@ -104,11 +112,21 @@
                 @else
                 <p>Trạng thái : Đã hoàn thành</p>
                 @endif
-                <p>Số người tham gia: {{$number_user}}</p>
-                <p>Số người theo dõi: {{$number_follow}}</p>
-            
+                <p>Số người tham gia : {{$number_user}}</p>
+                <p>Số người theo dõi : {{$number_follow}}</p>
+                
                 @if($user->id == Auth::user()->id)
-                <a href="/plans/{{$plan->id}}/joiner-management" class="btn btn-info">Quản lý người tham gia</a><!-- Thêm lệnh if ở đây để ẩn với người ko phải chủ kế hoạch-->
+                    @if($plan->status == 0)
+                         <a href="{{route('turn_on_plan', $plan->id)}}" class="btn btn-danger" style="height:38px;width:195px">Triển khai kế hoạch</a>
+                         <br>
+                         <br>
+                    @endif
+                    @if($plan->status == 1)
+                         <a href="{{route('turn_off_plan', $plan->id)}}" class="btn btn-danger" style="height:38px;width:195px">Tạm dừng kế hoạch</a>
+                         <br>
+                         <br>
+                    @endif
+                <a href="/plans/{{$plan->id}}/joiner-management" class="btn btn-info" style="height:38px;width:195px">Quản lý người tham gia</a><!-- Thêm lệnh if ở đây để ẩn với người ko phải chủ kế hoạch-->
                 @endif
             </div>
         </div>
@@ -126,17 +144,41 @@
                         <br>
                         @if($comment->picture != null)
                         @foreach(explode(', ',$comment->picture) as $picture)
-                        <img class="mr-3 img-responsive" src="{{asset('images/comments/'.$picture)}}" width="320px" height="250px" alt="Generic placeholder image">
+                        <img class="mr-3 img-responsive" src="{{asset('images/comments/'.$picture)}}" width="200px" height="150px" alt="Generic placeholder image">
 
                         @endforeach
                         @endif
                         <div class="panel-heading">
                             <p class="panel-title">
-                                <a class="btn btn-link" data-toggle="collapse" data-parent="#accordion" href="#{{$comment->id}}" data-toggle="tooltip" title="Các câu trả lời" >{{$comment->replies->count()}} <i class="fas fa-reply"></i></a>
-                                <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Xóa bình luận"><i class="far fa-trash-alt"></i></a>
+                                <a class="btn btn-link" data-toggle="collapse" data-parent="#accordion" href="#rep{{$comment->id}}" data-toggle="tooltip" title="Các câu trả lời" >{{$comment->replies->count()}} <i class="fas fa-reply"></i></a>
+                                @if($comment->user_id == Auth::user()->id)
+                                <a class="btn btn-link text-danger" href="{{route('comments.destroy',[$comment->id,$plan->id])}}" data-toggle="tooltip" title="Xóa bình luận"><i class="far fa-trash-alt"></i></a>
+                                <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#{{$comment->id}}" title="Sửa bình luận"><i class="fas fa-pencil-alt"></i></a>
+                                <!-- Modal -->
+                                  <div class="modal fade" id="{{$comment->id}}" role="dialog">
+                                    <div class="modal-dialog">
+                                    
+                                      <!-- Modal content-->
+                                      <div class="modal-content">
+                                        <div class="modal-body">
+                                          <p>Edit comment</p>
+                                          <form method="post" action="{{route('comments.edit',$comment->id)}}">
+                                            @csrf
+                                                <input type="text" class="form-control" name="{{$comment->id}}" value="{{$comment->content}}"/>
+                                                <button type="submit" class="btn btn-outline-secondary">Submit</a>
+                                            </form> 
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                      </div>
+                                      
+                                    </div>
+                                  </div>
+                                @endif
                             </p>
                         </div>
-                        <div id="{{$comment->id}}" class="panel-collapse collapse">
+                        <div id="rep{{$comment->id}}" class="panel-collapse collapse">
                             @foreach( $comment->replies as $reply )
                             <div class="media mt-3">
                                 <a class="pr-3" href="{{route('users.show',$reply->user->id)}}">
@@ -149,13 +191,37 @@
                                     <br>
                                     @if($reply->picture != null)
                                     @foreach(explode(', ',$reply->picture) as $picture)
-                                    <img class="mr-3 img-responsive" src="{{asset('images/comments/'.$picture)}}" width="320px" height="250px"  alt="Generic placeholder image">
+                                    <img class="mr-3 img-responsive" src="{{asset('images/comments/'.$picture)}}" width="200px" height="150px"  alt="Generic placeholder image">
 
                                     @endforeach
                                     @endif
                                     <div class="panel-heading">
                                         <p class="panel-title">
-                                            <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Xóa bình luận"><i class="far fa-trash-alt"></i></a>
+                                            @if($reply->user_id == Auth::user()->id)
+                                            <a class="btn btn-link text-danger" href="{{route('comments.destroy',[$reply->id,$reply->plan_id])}}" data-toggle="tooltip" title="Xóa bình luận"><i class="far fa-trash-alt"></i></a>
+                                            <a class="btn btn-link text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#{{$reply->id}}" title="Sửa bình luận"><i class="fas fa-pencil-alt"></i></a>
+                                            <!-- Modal -->
+                                              <div class="modal fade" id="{{$reply->id}}" role="dialog">
+                                                <div class="modal-dialog">
+                                                
+                                                  <!-- Modal content-->
+                                                  <div class="modal-content">
+                                                    <div class="modal-body">
+                                                      <p>Edit comment</p>
+                                                      <form method="post" action="{{route('comments.edit',$reply->id)}}">
+                                                        @csrf
+                                                            <input type="text" class="form-control" name="{{$reply->id}}" value="{{$reply->content}}"/>
+                                                            <button type="submit" class="btn btn-outline-secondary">Submit</a>
+                                                        </form> 
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                  </div>
+                                                  
+                                                </div>
+                                              </div>
+                                            @endif
                                         </p>
                                     </div>
                                 </div>

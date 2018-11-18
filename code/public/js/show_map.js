@@ -63,13 +63,12 @@
   function showPositionCheckin(position) {
     var latlng = {lat: position.coords.latitude, lng: position.coords.longitude};
     var geocoder = new google.maps.Geocoder;
-
     geocoder.geocode({'location': latlng}, function(results,status) {
       var checkin_location = document.getElementsByName('name_place');
       for(i = 0; i < checkin_location.length; i++){
         checkin_location[i].value = results[0].formatted_address;
-        console.log(checkin_location[i].value);
+        //alert(checkin_location[i].value);
       }
-      // console.log(document.getElementsByName('name_place'));
+      //alert(document.getElementsByName('name_place'));
     });
   }

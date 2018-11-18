@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\RoadController;
+use App\Http\Controllers\RoadController; 
 use App\Http\Controllers\RequestController;
 use App\Plan;
 use App\Road;
 use App\Slide;
 use App\User;
 use App\Request as JoinRequest;
-use Carbon\Carbon;
+use Carbon\Carbon; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\DB;
 
 class PlanController extends Controller
 {
@@ -22,7 +23,7 @@ class PlanController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
     public function index()
     {
@@ -94,7 +95,7 @@ class PlanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    {   
         $plan      = Plan::find($id);
         
         if($plan == null) 
@@ -103,7 +104,7 @@ class PlanController extends Controller
         $all_users = $plan->users;
 
         $number_user   = $plan->users()->wherePivot('role', '<', 2)->count();
-        $number_follow = $plan->users()->wherePivot('role', 2)->count();
+        $number_follow = $plan->users()->wherePivot('role', 2)->count() + $number_user;
         $user          = $plan->users()->wherePivot('role', 0)->first();
         // dd($user)    ;
         // to call relationship
@@ -143,7 +144,6 @@ class PlanController extends Controller
     public function update(Request $request, $id)
     {
         //
-
     }
 
     public function updateBanner(Request $request)
@@ -151,28 +151,23 @@ class PlanController extends Controller
         if ($request->hasFile('plan_photo')) {
             $file = $request->file('plan_photo');
             $file->move('images/plans', $request->banner_name);
+            return redirect()->route('plans.edit', $request->plan_id);
         }
     }
 
     public function updatePlanName(Request $request)
-    {
-        $plan_name = $request->plan_name;
-        $id        = $request->plan_id;
-
-        $plan       = Plan::find($id);
-        $plan->name = $plan_name;
+    {   
+        $plan       = Plan::find($request->plan_id);
+        $plan->name = $request->plan_name_tamp;
         $plan->save();
+        return redirect()->route('plans.edit', $request->plan_id);
     }
 
-    public function updateRoute(Request $request)
+    public function updateRoute(Request $request) 
     {
-
-        $order_number = $request->order_number;
-
-        $road = Road::find($order_number);
-
-        $road->plan_id      = $request->plan_id;
-        $road->order_number = $order_number;
+        $road_stamp = Road::all()->where('plan_id', $request->plan_id)->where('order_number', $request->order_number)->toArray();
+        $id = $road_stamp[1]['id'];
+        $road = Road::find($id);
         $road->start_place  = $request->start_place;
         $road->start_time   = $request->start_time;
         $road->end_place    = $request->end_place;
@@ -186,7 +181,7 @@ class PlanController extends Controller
     public function addRoute(Request $request)
     {
 
-        $order_number = Road::all()->count();
+        $order_number = Road::where('plan_id',$request->plan_id)->count();
 
         $road = new Road;
 
@@ -205,8 +200,8 @@ class PlanController extends Controller
     public function deleteRoute(Request $request)
     {
 
-        $order_number = Road::all()->count();
-        $road         = Road::where('order_number', $order_number)->delete();
+        $order_number = Road::where('plan_id',$request->plan_id)->count();
+        $road = Road::where('order_number', $order_number)->delete();
     }
 
     /**
@@ -219,8 +214,10 @@ class PlanController extends Controller
     {
         //permanently deletion
         $plan = Plan::find($id);
-        $plan->roads()->forceDelete();
+        $plan->comments()->where('parent_id','<>',null)->forceDelete();
         $plan->comments()->forceDelete();
+        $plan->roads()->forceDelete();
+        $plan->requests()->forceDelete();
         $plan->delete();
 
         $user = User::find(Auth::id());
@@ -288,6 +285,28 @@ class PlanController extends Controller
         return redirect()->route('plans.show', $id);
     }
 
+    public function unJoinRq($id){
+        $stamp = DB::table('requests')->where('plan_id', $id)->where('user_id', Auth::id())->get()->toArray();
+        $unFollowRq = DB::table('requests')->where('id', $stamp[0]->id)->delete();
+        return redirect()->route('plans.show', $id);
+    }
+    public function unFollowRq($id){
+        $stamp = DB::table('plan_user')->where('plan_id', $id)->where('user_id', Auth::id())->get()->toArray();
+        $unJoinRq = DB::table('plan_user')->where('id', $stamp[0]->id)->delete();
+        return redirect()->route('plans.show', $id);
+    }
+    public function turnOnPlan($id){
+        $plan = Plan::find($id);
+        $plan->status = 1;
+        $plan->save();
+        return redirect()->route('plans.show', $id);
+    }
+    public function turnOffPlan($id){
+        $plan = Plan::find($id);
+        $plan->status = 0;
+        $plan->save();
+        return redirect()->route('plans.show', $id);
+    }
     public function accept(Request $request, $id, $userId){
         //update request
         $jRequest = JoinRequest::find($request->request_id);

@@ -11,7 +11,7 @@
                     <h5 class="card-header">{{$plan->name}}</h5>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-3"><img src="{{asset('images/plans/plan1.jpg')}}" width="100%" style="margin-bottom: 5px" ></div>
+                            <div class="col-sm-3"><img src="{{asset('images/plans/'.$plan->picture)}}" width="100%" style="margin-bottom: 5px" ></div>
                             <div class="col-sm-9">
                                 <p class="card-text">Thời gian bắt đầu: {{$plan->start_time}}</p>
                                 <p class="card-text">Thời gian kết thúc: {{$plan->end_time}}</p>

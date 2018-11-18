@@ -1,18 +1,28 @@
 <?php
 
 namespace App\Http\Controllers;
-
+ 
 use App\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function destroy($id)
+    public function destroy($id,$planId)
     {
-        $road = Comment::find($id);
-        $road->delete(); 
-        return redirect()->route('plans.index'); //có thể sửa nếu cần thiết
+        $cmt = Comment::find($id);
+        $cmt->delete(); 
+        return redirect()->route('plans.show',$planId); //có thể sửa nếu cần thiết
+    }
+
+    public function edit(Request $request, $id)
+    {
+        $cmt = Comment::find($id);
+        $cmt->content = $request->$id;
+        $cmt->save();
+
+        return redirect()->route('plans.show', $cmt->plan_id);
+        // dd($request->$id);
     }
  
     public function store(Request $request)

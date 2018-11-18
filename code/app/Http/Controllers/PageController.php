@@ -11,7 +11,7 @@ use App\PlanUser;
 class PageController extends Controller
 {
 	public function index(){
-		$plans = Plan::orderBy('created_at', 'desc')
+		$plans = Plan::where('status', 1)->orderBy('created_at', 'desc')
 		->take(10)
 		->get();
 		$slides = Slide::all();

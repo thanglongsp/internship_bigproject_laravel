@@ -16,7 +16,7 @@ function addTableRow() {
     }
     else{
         var table = document.getElementById("tBody");
-        var row   = table.insertRow(0);
+        var row   = table.insertRow(0); 
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
@@ -133,7 +133,7 @@ function geocodeLatLng(geocoder, map, infowindow) {
                     markers.push(marker);
                     marker.set("id", 2);
                 }
-                // alert(marker.getPosition());
+                //alert(marker.getPosition());
                 google.maps.event.addListener(marker, 'dragend', function() {
                     // var location = marker.getPosition().lat()+','+marker.getPosition().lng();
                     geocoder.geocode({

@@ -6,7 +6,7 @@ use App\Road;
 use Illuminate\Http\Request;
 
 class RoadController extends Controller
-{
+{ 
     //
     public function store($plan_id, $data){
     	$road = new Road;

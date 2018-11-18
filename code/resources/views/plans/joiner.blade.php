@@ -17,7 +17,7 @@
             <h1>{{$plan->name}}</h1>
         </div>
         <div class="col-sm-3 ml-auto">
-            <!-- Dành cho người muốn tham gia hay theo dõi kế hoạch -->
+            <!-- Dành cho người muốn tham gia hay theo dõi kế hoạch --> 
             @if($user->id != Auth::user()->id)
             <a href="javascript:void(0)" class="btn btn-outline-success">Xin tham gia</a>
             <a href="javascript:void(0)" class="btn btn-outline-primary">Theo dõi</a>
@@ -34,7 +34,7 @@
         </div>
         <div class="row">
             <div class="offset-sm-1 col-sm-4">
-                <img src="{{asset('images/plans/'.$plan->picture)}}" width="100%"><!--Hình ảnh xem trước-->
+                <img src="{{asset('images/plans/'.$plan->picture)}}" width="400px" height="300px"><!--Hình ảnh xem trước-->
             </div>
             <div class="col-sm-6">
                 <div id="map"></div>
@@ -70,7 +70,7 @@
                         <form method="POST" action="{{route('kick_user', $plan->id)}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="user_id" value="{{$participant->id}}">
-                            <button type="submit" class="card-link btn btn-outline-danger mt-1">Loại</a>
+                            <button type="submit" class="card-link btn btn-outline-danger mt-1" style="height:38px;width:150px">Loại</a>
                         </form>
                     </div>
                 </div>
@@ -81,20 +81,19 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="media">
-                            <img class="mr-3" src="{{asset('images/avatars/'.$request->user->avatar)}}" width="150px">
+                            <img class="mr-3" src="{{asset('images/avatars/'.$request->user->avatar)}}" width="150px"> 
                             <div class="media-body">
                                 <h5 class="mt-0"><a href="#">{{$request->user->name}}</a></h5>
-                                <p>Ngày sinh: {{$request->user->birthday}}</p>
-                                <p>Email: {{$request->user->email}}</p>        
+                                <p>Email : {{$request->user->email}}</p>        
                             </div>
                         </div>
                         <form method="post" action="{{route('acceptRequest', [$plan->id, $request->user->id])}}">
                             @csrf
-                            <button type="submit" name="request_id" class="card-link btn btn-outline-primary mt-1" value="{{$request->id}}">Chấp nhận</button>
+                            <button type="submit" name="request_id" class="card-link btn btn-outline-primary mt-1" value="{{$request->id}}" style="height:38px;width:150px">Chấp nhận</button>
                         </form>
                         <form method="post" action="{{route('denyRequest', [$plan->id, $request->user->id])}}">
                             @csrf
-                            <button type="submit" name="request_id" class="card-link btn btn-outline-danger mt-1" value="{{$request->id}}">Loại</button>
+                            <button type="submit" name="request_id" class="card-link btn btn-outline-danger mt-1" value="{{$request->id}}" style="height:38px;width:150px">Loại</button>
                         </form>
                     </div>
                 </div>

@@ -13,7 +13,7 @@ function getTableContent() {
     }
     // console.log(table_data);
     return table_data;
-}
+} 
 
 function getRowContent(row) {
     var row_data = {
