@@ -7,17 +7,17 @@ use Illuminate\Http\Request;
 
 class RoadController extends Controller
 { 
-    //
+    // Save road to plan
     public function store($plan_id, $data){
-    	$road = new Road;
-    	$road->plan_id = $plan_id;
-    	$road->order_number = $data->order_number;
-    	$road->start_place = $data->start_place;
-    	$road->end_place = $data->end_place;
-    	$road->start_time = $data->start_time;
-    	$road->end_time = $data->end_time;
-    	$road->vehicle = $data->vehicle;
-    	$road->action = $data->action;
+    	$road                  = new Road;
+    	$road->plan_id         = $plan_id;
+    	$road->order_number    = $data->order_number;
+    	$road->start_place     = $data->start_place;
+    	$road->end_place       = $data->end_place;
+    	$road->start_time      = $data->start_time;
+    	$road->end_time        = $data->end_time;
+    	$road->vehicle         = $data->vehicle;
+    	$road->action          = $data->action;
     	$road->save();
 	}
 	
@@ -25,6 +25,6 @@ class RoadController extends Controller
     {
         $road = Road::find($id);
         $road->delete();
-        return redirect()->route('plans.index');//có thể sửa nếu cần thiết
+        return redirect()->route('plans.index');
     }
 }

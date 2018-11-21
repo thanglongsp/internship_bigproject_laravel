@@ -7,49 +7,47 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
-{
+{   
+    // delete comment
     public function destroy($id,$planId)
     {
         $cmt = Comment::find($id);
         $cmt->delete(); 
-        return redirect()->route('plans.show',$planId); //có thể sửa nếu cần thiết
+        return redirect()->route('plans.show',$planId);
     }
 
+    // fix comment
     public function edit(Request $request, $id)
     {
-        $cmt = Comment::find($id);
-        $cmt->content = $request->$id;
+        $cmt            = Comment::find($id);
+        $cmt->content   = $request->$id;
         $cmt->save();
-
         return redirect()->route('plans.show', $cmt->plan_id);
-        // dd($request->$id);
     }
- 
+    
+    // save comment
     public function store(Request $request)
     {
         // dd($request); 
-        $string = "";
-        $files = $request->file('upImage');
-        if($request->srcImage == null && $request->comment == null && $request->hasFile('upImage') == null){
+        $string     = "";
+        $files      = $request->file('upImage');
+        
+        if($request->srcImage == null && $request->comment == null && $request->hasFile('upImage') == null)
             return redirect()->route('plans.show', $request->plan_id);
-        }
-        if($request->srcImage != null){
+        
+        if($request->srcImage != null)
+        {
             $rawData        = $request->srcImage;
             $filteredData   = explode(',', $rawData);
             $unencoded      = base64_decode($filteredData[1]);
-            $randomName = rand(0, 99999);;
-
-
-            $rs = file_put_contents('images/comments/'.$randomName.'.png', $unencoded);
-
-            $string = $randomName.'.png';
-            //dd($string);
+            $randomName     = rand(0, 99999);;
+            $rs             = file_put_contents('images/comments/'.$randomName.'.png', $unencoded);
+            $string         = $randomName.'.png';
         }
 
         if($request->hasFile('upImage')){
             foreach ($files as $img) {
                 $name = Comment::all()->count().'_'.$img->getClientOriginalName();
-                // var_dump($name);
                 $img->move('images/comments', $name);
 
                 if ($string == "") {
@@ -63,7 +61,6 @@ class CommentController extends Controller
 
         if($request->hasFile('upImage') || $request->srcImage != null || $request->comment != null){
             $comment = new Comment;
-
             $comment->plan_id          = $request->plan_id;
             $comment->user_id          = Auth::user()->id;
             $comment->checkin_location = $request->name_place;

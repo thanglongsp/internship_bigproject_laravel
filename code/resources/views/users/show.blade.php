@@ -1,28 +1,28 @@
 @extends('users.profile')
 @section('content2')
 <div>
-   {{--  <h3>Thông tin người dùng </h3>
+   {{--  <h3>User's Infomation </h3>
     <br> --}}
     <div class=".col-s-3">
         <table style="width:100%">
             <tr>
-                <th>Họ tên</th>
+                <th>Name </th>
                 <td>{{ $user->name }}</td>
             </tr> 
             <tr>
-                <th>Giới tính </th>
+                <th>Gender </th>
                 @if($user->gender == 1)
-                <td>Nam</td>
+                <td>Male</td>
                 @else
-                <td>Nữ</td>
+                <td>Female</td>
                 @endif
             </tr>
             <tr>
-                <th>Số điện thoại </th>
+                <th>Phone number </th>
                 <td>{{ $user->phone_number }}</td>
             </tr>
             <tr>
-                <th>Ngày sinh </th>
+                <th>Birth day </th>
                 <td>{{ date('m/d/Y', strtotime($user->birthday)) }}</td>
             </tr>
             <tr>

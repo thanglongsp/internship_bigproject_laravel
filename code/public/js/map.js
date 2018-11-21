@@ -40,6 +40,26 @@ function addTableRow() {
     }
 }
 
+// Ham end point
+function endPoint(){
+    if (confirm("Are you sure ?")){
+        var table_data = [];
+        var rows = document.getElementById('tBody').rows;
+        var i = 0;
+        for (i = 0; i < rows.length; i++) {
+            row = rows[i];
+            row_data = getRowContent(row);
+
+            // add order_number to row  
+            row_data['order_number'] = rows.length - i;
+            table_data.push(row_data);
+        }
+
+        document.getElementById('start').value  = table_data[0]['end_place'];
+        document.getElementById('end').value    = table_data[i-1]['start_place'];
+    }
+}
+
 // Hàm xóa row của bảng roads
 function clearMarkers() {
     for (var i = 0; i < markers.length; i++) {

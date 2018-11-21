@@ -20,7 +20,7 @@
             
             <div class="col-sm-9">
                 <div class="form-group row"> 
-                    <label for="inputName" class="col-sm-2 col-form-label">Họ tên:</label>
+                    <label for="inputName" class="col-sm-2 col-form-label">Name :</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="inputName" placeholder="Họ tên" value="{{ Auth::user()->name }}">
                     </div>
@@ -32,38 +32,38 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="birthday" class="col-sm-2 col-form-label">Ngày sinh :</label>
+                    <label for="birthday" class="col-sm-2 col-form-label">Birth day :</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="birthday" name="birthday" value="{{ date('m/d/Y', strtotime(Auth::user()->birthday)) }}"><!--validate cho trường này do đổi type-->
                     </div>
                 </div>
                 <div class="form-group row"> 
-                    <label for="inputGender" class="col-sm-2 col-form-label">Giới tính:</label>
+                    <label for="inputGender" class="col-sm-2 col-form-label">Gender :</label>
                     <div class="col-sm-10">
                         @if(Auth::user()->gender == 1)
-                            <input type="radio" name ="inputGender" value="1" checked>Nam</input>
-                            <input type="radio" name ="inputGender" value="2">Nữ</input>
+                            <input type="radio" name ="inputGender" value="1" checked>Male</input>
+                            <input type="radio" name ="inputGender" value="2">Female</input>
                         @endif
                         @if(Auth::user()->gender == 2)
-                            <input type="radio" name ="inputGender" value="1">Nam </input>
-                            <input type="radio" name ="inputGender" value="2" checked>Nữ</input>
+                            <input type="radio" name ="inputGender" value="1">Male </input>
+                            <input type="radio" name ="inputGender" value="2" checked>Female</input>
                         @endif 
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="phone-number" class="col-sm-2 col-form-label">Số điện thoại :</label>
+                    <label for="phone-number" class="col-sm-2 col-form-label">Phone number :</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="phone_number" placeholder="Số điện thoại" value="{{ Auth::user()->phone_number }}">
+                        <input type="text" class="form-control" name="phone_number" placeholder="phone number" value="{{ Auth::user()->phone_number }}">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">Mật khẩu:</label>
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Password :</label>
                     <div class="col-sm-10">
                         <input type="password" class="form-control" name="inputPassword" placeholder="Password">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">Nhập lại mật khẩu:</label>
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Confirm password :</label>
                     <div class="col-sm-10">
                         <input type="password" class="form-control" name="inputPassword_confirmation" placeholder="Re-enter password">
                     </div>
@@ -72,7 +72,7 @@
                 <div class="form-group row">
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-primary">
-                            Lưu chỉnh sửa
+                            Save
                         </button>
                     </div>
                 </div>

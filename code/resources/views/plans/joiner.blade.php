@@ -19,15 +19,15 @@
         <div class="col-sm-3 ml-auto">
             <!-- Dành cho người muốn tham gia hay theo dõi kế hoạch --> 
             @if($user->id != Auth::user()->id)
-            <a href="javascript:void(0)" class="btn btn-outline-success">Xin tham gia</a>
-            <a href="javascript:void(0)" class="btn btn-outline-primary">Theo dõi</a>
+            <a href="javascript:void(0)" class="btn btn-outline-success">Join</a>
+            <a href="javascript:void(0)" class="btn btn-outline-primary">Follow</a>
             @else
             <!-- dành cho chủ kế hoạch -->
-            <a href="{{route('plans.edit',$plan->id)}}" class="btn btn-primary">Sửa kế hoạch</a>
+            <a href="{{route('plans.edit',$plan->id)}}" class="btn btn-primary">Edit plan</a>
             <form method="POST" action="{{route('plans.destroy',$plan->id)}}" style="display: initial;">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <button type="submit" class="btn btn-danger">Xóa kế hoạch</a>
+                <button type="submit" class="btn btn-danger">Delete plan</a>
                 </form>
                 @endif
             </div>
@@ -44,10 +44,10 @@
         <div class="col-sm-2 offset-sm-1">
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="pill" href="#joinedlist">Danh sách tham gia</a>
+                    <a class="nav-link active" data-toggle="pill" href="#joinedlist">List joinner</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="pill" href="#wanttojoinlist">Yêu cầu tham gia <span class="float-sm-right want-to-join-number">{{sizeof($requests)}}</span></a>
+                    <a class="nav-link" data-toggle="pill" href="#wanttojoinlist">Request join <span class="float-sm-right want-to-join-number">{{sizeof($requests)}}</span></a>
                 </li>
             </ul>
         </div>
@@ -63,14 +63,14 @@
                                 <h5 class="mt-0">
                                     <a href="{{route('users.show', $participant->id)}}">{{$participant->name}}</a>
                                 </h5>
-                                <p>Ngày sinh: {{$participant->birthday}}</p>
-                                <p>Email: {{$participant->email}}</p>        
+                                <p>Birth day : {{$participant->birthday}}</p>
+                                <p>Email : {{$participant->email}}</p>        
                             </div>
                         </div>
                         <form method="POST" action="{{route('kick_user', $plan->id)}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="user_id" value="{{$participant->id}}">
-                            <button type="submit" class="card-link btn btn-outline-danger mt-1" style="height:38px;width:150px">Loại</a>
+                            <button type="submit" class="card-link btn btn-outline-danger mt-1" style="height:38px;width:150px">Kick</a>
                         </form>
                     </div>
                 </div>
@@ -89,11 +89,11 @@
                         </div>
                         <form method="post" action="{{route('acceptRequest', [$plan->id, $request->user->id])}}">
                             @csrf
-                            <button type="submit" name="request_id" class="card-link btn btn-outline-primary mt-1" value="{{$request->id}}" style="height:38px;width:150px">Chấp nhận</button>
+                            <button type="submit" name="request_id" class="card-link btn btn-outline-primary mt-1" value="{{$request->id}}" style="height:38px;width:150px">Accept</button>
                         </form>
                         <form method="post" action="{{route('denyRequest', [$plan->id, $request->user->id])}}">
                             @csrf
-                            <button type="submit" name="request_id" class="card-link btn btn-outline-danger mt-1" value="{{$request->id}}" style="height:38px;width:150px">Loại</button>
+                            <button type="submit" name="request_id" class="card-link btn btn-outline-danger mt-1" value="{{$request->id}}" style="height:38px;width:150px">Deny</button>
                         </form>
                     </div>
                 </div>

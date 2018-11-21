@@ -24,8 +24,8 @@ class StoreRoadRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_time' => 'date_format:Y/m/d H:i:s|after:now',
-            'end_time' => 'date_format:Y/m/d H:i:s|after:start_time',
+            'start_time'    => 'date_format:Y/m/d H:i:s|after:now',
+            'end_time'      => 'date_format:Y/m/d H:i:s|after:start_time',
         ];
     }
 }

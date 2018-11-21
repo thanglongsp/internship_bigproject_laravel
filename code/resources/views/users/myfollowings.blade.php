@@ -3,7 +3,7 @@
 @section('content2')
             <div>                
                 @if(sizeof($following) == null)
-                <p>Hiện chưa theo dõi kế hoạch nào</p>
+                <p>You have not followed any plans yet</p>
                 @endif                
                 @foreach($following as $plan)
                 <div class="card">
@@ -12,20 +12,20 @@
                         <div class="row">
                             <div class="col-sm-3"><img src="{{asset('images/plans/'.$plan->picture)}}" width="100%" style="margin-bottom: 5px" ></div>
                             <div class="col-sm-9">
-                                <p class="card-text">Thời gian bắt đầu: {{$plan->start_time}}</p>
-                                <p class="card-text">Thời gian kết thúc: {{$plan->end_time}}</p>
-                                <p class="card-text">Số lượng người: 
+                                <p class="card-text">Start time : {{$plan->start_time}}</p>
+                                <p class="card-text">End time : {{$plan->end_time}}</p>
+                                <p class="card-text">Number people : 
                                     {{$plan->users()->wherePivot('role', '<', 2)->count()}}</p>
                                 @if($plan->status == 0)
-                                <p class="card-text">Trạng thái: Đang lên kế hoạch</p>
+                                <p class="card-text">Status : Is planning ... </p>
                                 @elseif($plan->status == 1)
-                                <p class="card-text">Trạng thái: Đang triển khai</p>
+                                <p class="card-text">Status : Being deployed</p>
                                 @else
-                                <p class="card-text">Trạng thái: Đã hoàn thành</p>
+                                <p class="card-text">Status : Finished</p>
                                 @endif
                             </div>
                         </div>
-                        <a href="{{route('plans.show', $plan->id)}}" class="btn btn-primary">Xem thêm</a>
+                        <a href="{{route('plans.show', $plan->id)}}" class="btn btn-primary">More ... </a>
                     </div>
                 </div>
                 @endforeach

@@ -1,22 +1,22 @@
 @extends('layouts.master_planedit')
 @section('content') 
 <div class="container">
-    <h1>Sửa kế hoạch</h1>
+    <h1>Edit plan</h1>
     <input type="hidden" id = "latlng"></input><br>
     <form method="post" action="{{route('update_plan_name')}}" enctype="multipart/form-data"> 
     <input type="hidden" name="_token" value="{{ csrf_token() }}"> 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Tên kế hoạch</label>
             <div class="input-group mb-3 mt-0">
-                <input name="plan_name_tamp" id="plan_name_tamp" value="{{$plan->name}}" type="text" class="form-control" placeholder="Bình luận..." aria-label="Recipient's username" aria-describedby="basic-addon2">
-                <button class="btn btn-outline-primary" type="submit">Cập nhập</button>
+                <label class="col-sm-2 col-form-label">Plan name</label>
+                <input name="plan_name_tamp" id="plan_name_tamp" value="{{$plan->name}}" type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <button class="btn btn-outline-primary" type="submit">Update</button>
                 <input type="hidden" name="plan_id" value="{{$plan->id}}">
             </div>
         </div>
     </form>
 
     <div class="row"> 
-        <label class="col-sm-2 col-form-label">Ảnh</label> 
+        <label class="col-sm-2 col-form-label">Picture</label> 
         <div class="form-group col-sm-10">
             <div class="">
             <form method="post" action="{{route('update_banner')}}" enctype="multipart/form-data"> 
@@ -28,10 +28,10 @@
                 <input type="hidden" name="banner_name" value="{{$plan->picture}}">
                 <input type="hidden" name="plan_id" value="{{$plan->id}}">
 
-                <button type="submit" class="btn btn-outline-primary">Cập nhập</button>
+                <button type="submit" class="btn btn-outline-primary">Update</button>
             <form> 
             </div>  
-        </div>
+        </div> 
     </div> 
     <div class="form-group row">
         <div class="offset-sm-2 col-sm-4">
@@ -43,27 +43,27 @@
     </div>
     
     <div class="form-group row">
-        <label class="offset-sm-2 col-sm-2 col-form-label">Thời gian bắt đầu</label>
+        <label class="offset-sm-2 col-sm-2 col-form-label">Start time</label>
         <div class="col-sm-3">
             <input type="text" class="form-control" name="start_time" id="start_time" onchange="validateForm()">
         </div>
-        <label class="col-sm-2 col-form-label" >Địa điểm bắt đầu</label>
+        <label class="col-sm-2 col-form-label" >Start</label>
         <div class="col-sm-3 col-form-label">
             <input type="text" class="form-control" name="startpoint" id="start" onchange="validateForm()">
         </div>
     </div>
     <div class="form-group row">
-        <label class="offset-sm-2 col-sm-2 col-form-label">Thời gian kết thúc</label>
+        <label class="offset-sm-2 col-sm-2 col-form-label">End time</label>
         <div class="col-sm-3">
             <input type="text" class="form-control" name="end_time" id="end_time" onchange="validateForm()">
         </div>
-        <label class="col-sm-2 col-form-label">Địa điểm kết thúc</label>
+        <label class="col-sm-2 col-form-label">End</label>
         <div class="col-sm-3 col-form-label">
             <input type="text" class="form-control" name="endpoint" id="end" onchange="validateForm()">
         </div>
     </div>
     <div class="form-group row">    
-        <label class="offset-sm-2 col-sm-2 col-form-label">Phương tiện</label>
+        <label class="offset-sm-2 col-sm-2 col-form-label">Vehicle</label>
         <div class="col-sm-8">
             <select class="form-control" name="vehicle" id="mode"> 
                 <option value="x"></option><!--Sửa trường vehicle trong plan là nullable và option này sẽ sửa là null-->
@@ -75,7 +75,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <label class="offset-sm-2 col-sm-2 col-form-label">Hoạt động</label>
+        <label class="offset-sm-2 col-sm-2 col-form-label">Action</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" name="action" id="action" onchange="validateForm()">
             <p style="color:red;" id="notify"></p>
@@ -84,10 +84,10 @@
     <div class="form-group row">
         <div class="offset-sm-2">
             <button class="btn btn-primary" onclick="addRoute()"> <!--Xử lý bằng action javascript-->
-                Thêm hoạt động
+                Add road
             </button>
             <button type="button" id="submit_plan" class="btn btn-primary" onclick="updateRoute()">
-                Cập nhập hoạt động
+                Update road
             </button>
         </div>
     </div>
@@ -217,25 +217,27 @@ function addRoute(){
 }
 
 function deleteRoute(){ 
-    //TODO: fix this mess
-    var url         = "{{route('delete_route')}}";
-    var plan_id     = document.getElementById('plan_id').value;
+    if (confirm("Are you sure ?")){
+        //TODO: fix this mess
+        var url         = "{{route('delete_route')}}";
+        var plan_id     = document.getElementById('plan_id').value;
 
-    $.ajax({
-        url: url,
-        type: 'post',
-        data: {
-            "_token"        : '{{csrf_token()}}',
-            "plan_id"       : plan_id,
-        },
-        success: function(data) {
-            window.location.reload();
-        },
-        error: function(data) {
-            console.log(data);
-            alert('error!');
-        },
-    });
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: {
+                "_token"        : '{{csrf_token()}}',
+                "plan_id"       : plan_id,
+            },
+            success: function(data) {
+                window.location.reload();
+            },
+            error: function(data) {
+                console.log(data);
+                alert('error!');
+            },
+        });
+    }
 }
 </script>
 

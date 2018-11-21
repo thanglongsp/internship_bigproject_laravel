@@ -1,17 +1,17 @@
 @extends('layouts.master')
 @section('content')
 <div class="container">
-    <h1>Tạo kế hoạch</h1>
+    <h1>Creat plan</h1>
     <input type="hidden" id = "latlng"></input><br>
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Tên kế hoạch</label>
+        <label class="col-sm-2 col-form-label">Plan name</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" name="plan_name_tamp" id="plan_name_tamp">
         </div>
     </div>
 
     <div class="row">
-        <label class="col-sm-2 col-form-label">Ảnh</label>
+        <label class="col-sm-2 col-form-label">Picture</label>
         <div class="form-group col-sm-10" enctype="multipart/form-data">
             <div class="upload-btn-wrapper">
                 <button class="plan-img-upload"><i class="fas fa-upload"></i></button>
@@ -33,27 +33,27 @@
     </div>
 
     <div class="form-group row">
-        <label class="offset-sm-2 col-sm-2 col-form-label">Thời gian bắt đầu</label>
+        <label class="offset-sm-2 col-sm-2 col-form-label">Start time</label>
         <div class="col-sm-3">
             <input type="text" class="form-control" name="start_time" id="start_time"  onchange="validateForm1()">
         </div>
-        <label class="col-sm-2 col-form-label">Địa điểm bắt đầu</label>
+        <label class="col-sm-2 col-form-label">Start</label>
         <div class="col-sm-3 col-form-label">
             <input type="text" class="form-control" name="startpoint" id="start">
         </div>
     </div>
     <div class="form-group row">
-        <label class="offset-sm-2 col-sm-2 col-form-label">Thời gian kết thúc</label>
+        <label class="offset-sm-2 col-sm-2 col-form-label">End time</label>
         <div class="col-sm-3">
             <input type="text" class="form-control" name="end_time" id="end_time"  onchange="validateForm1()">
         </div>
-        <label class="col-sm-2 col-form-label">Địa điểm kết thúc</label>
+        <label class="col-sm-2 col-form-label">End</label>
         <div class="col-sm-3 col-form-label">
             <input type="text" class="form-control" name="endpoint" id="end">
         </div>
     </div>
     <div class="form-group row">    
-        <label class="offset-sm-2 col-sm-2 col-form-label">Phương tiện</label>
+        <label class="offset-sm-2 col-sm-2 col-form-label">Vehicle</label>
         <div class="col-sm-8">
             <select class="form-control" name="vehicle" id="mode">
                 <option value="x"></option><!--Sửa trường vehicle trong plan là nullable và option này sẽ sửa là null-->
@@ -65,7 +65,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <label class="offset-sm-2 col-sm-2 col-form-label">Hoạt động</label>
+        <label class="offset-sm-2 col-sm-2 col-form-label">Action</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" name="action" id="action">
             <p style="color:red;" id="notify"></p>
@@ -73,8 +73,14 @@
     </div>
     <div class="form-group row">
         <div class="offset-sm-2">
-            <button class="btn btn-primary" onclick="addTableRow()"> <!--Xử lý bằng action javascript-->
-            Thêm hoạt động
+            <button class="btn btn-primary" onclick="addTableRow()" style="height:38px;width:130px"> <!--Xử lý bằng action javascript-->
+            Add road
+            </button>
+            <button class="btn btn-danger" onclick="endPoint()" style="height:38px;width:130px"> <!--Xử lý bằng action javascript-->
+            End Point
+            </button>
+            <button class="btn btn-danger" onclick="addTableRow()" style="height:38px;width:130px"> <!--Xử lý bằng action javascript-->
+            End Plan
             </button>
         </div>
     </div>
@@ -86,12 +92,12 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Điểm xuất phát</th>
-                            <th>Thời gian xuất phát</th>
-                            <th>Điểm kết thúc</th>
-                            <th>Thời gian kết thúc</th>
-                            <th>Phương tiện</th>
-                            <th>Hoạt động</th>
+                            <th>Start</th>
+                            <th>Time start</th>
+                            <th>End</th>
+                            <th>End time</th>
+                            <th>Vehicle</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="tBody">
@@ -104,7 +110,7 @@
         <div class="form-group row">
             <div class="col-sm-2">
                 <button type="button" id="submit_plan" class="btn btn-primary" onclick="submitPlan()">
-                Thêm kế hoạch
+                Add plan
                 </button> 
             </div>
         </div>
@@ -140,7 +146,7 @@ function submitPlan() {
         },
         error: function(data) {
             console.log(data);
-            alert('error boiiiiiiiii');
+            alert('error !');
         },
     });
 }

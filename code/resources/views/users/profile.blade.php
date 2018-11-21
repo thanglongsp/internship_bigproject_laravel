@@ -8,19 +8,19 @@
                 @if($user->id != Auth::id())
                 <img class="card-img-top" src="{{asset('images/avatars/'.$user->avatar)}}" alt="Card image cap" style="padding: 6px">
                 <ul class="list-group list-group-flush nav nav-pills">
-                    <li class="list-group-item"><a href="{{route('users.show',$user->id)}}">Hồ sơ người dùng</a></li>
-                    <li class="list-group-item"><a href="/users/{{$user->id}}/my-plans">Kế hoạch của người dùng</a></li>
-                    <li class="list-group-item"><a href="/users/{{$user->id}}/my-following-plans">Kế hoạch theo dõi</a></li>
-                    <li class="list-group-item"><a href="/users/{{$user->id}}/my-joined-plans">Kế hoạch tham gia</a></li>
+                    <li class="list-group-item"><a href="{{route('users.show',$user->id)}}">Profile </a></li>
+                    <li class="list-group-item"><a href="/users/{{$user->id}}/my-plans">user's plan </a></li>
+                    <li class="list-group-item"><a href="/users/{{$user->id}}/my-following-plans">plan following </a></li>
+                    <li class="list-group-item"><a href="/users/{{$user->id}}/my-joined-plans">Plan joined </a></li>
                 </ul>
                 @else
                 <img class="card-img-top" src="{{asset('images/avatars/'. Auth::user()->avatar)}}" alt="Card image cap" style="padding: 6px">
                 <ul class="list-group list-group-flush nav nav-pills">
-                    <li class="list-group-item"><a href="{{route('users.show',Auth::user()->id)}}">Hồ sơ của tôi</a></li>
-                    <li class="list-group-item"><a href="/users/{{Auth::user()->id}}/my-plans">Kế hoạch của tôi</a></li>
-                    <li class="list-group-item"><a href="/users/{{Auth::user()->id}}/my-following-plans">Kế hoạch tôi theo dõi</a></li>
-                    <li class="list-group-item"><a href="/users/{{Auth::user()->id}}/my-joined-plans">Kế hoạch tôi tham gia</a></li>
-                    <li class="list-group-item"><a href="{{route('users.edit',Auth::user()->id)}}">Chỉnh sửa trang cá nhân</a></li>
+                    <li class="list-group-item"><a href="{{route('users.show',Auth::user()->id)}}">My profile </a></li>
+                    <li class="list-group-item"><a href="/users/{{Auth::user()->id}}/my-plans">My plans</a></li>
+                    <li class="list-group-item"><a href="/users/{{Auth::user()->id}}/my-following-plans">My following plans</a></li>
+                    <li class="list-group-item"><a href="/users/{{Auth::user()->id}}/my-joined-plans">My joined plans</a></li>
+                    <li class="list-group-item"><a href="{{route('users.edit',Auth::user()->id)}}">Edit my profile</a></li>
                 </ul>
                 @endif
             </div>

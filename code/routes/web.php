@@ -17,7 +17,7 @@ Route::get('/','PageController@index');
 Route::get('/hottestPlans','PageController@hottestPlans');
 Route::get('/latestUsers','PageController@latestUsers'); 
 Auth::routes();
-
+ 
 Route::get('/home', 'HomeController@index')->name('home');  
  
 // Plans 
@@ -53,7 +53,7 @@ Route::post('/plans/route/delete',[
 	'as'=>'delete_route',
 	'uses'=>'PlanController@deleteRoute'
 ]);
-Route::get('/plans/destroy/{id}',[
+Route::post('/plans/destroy',[
 	'as'=>'delete_plan',
 	'uses'=>'PlanController@destroy'
 ]);

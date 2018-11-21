@@ -8,16 +8,12 @@ use App\Request as JoinRequest;
 
 class RequestController extends Controller
 {
-    //
+    // Sent request to people
     public function store(Request $request, $id){
-    	$jRequest = new JoinRequest;
+    	$jRequest          = new JoinRequest;
     	$jRequest->user_id = Auth::id();
     	$jRequest->plan_id = $id;
-    	$jRequest->status = 0;
+    	$jRequest->status  = 0;
     	$jRequest->save();
-    }
-
-    public function accept(Request $request, $id){
-    	
     }
 }

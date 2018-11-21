@@ -11,7 +11,7 @@ use App\PlanUser;
 class PageController extends Controller
 {
 	public function index(){
-		$plans = Plan::where('status', 1)->orderBy('created_at', 'desc')
+		$plans 	= Plan::where('status', 1)->orderBy('created_at', 'desc')
 		->take(10)
 		->get();
 		$slides = Slide::all();
@@ -23,8 +23,8 @@ class PageController extends Controller
 		$plans = Plan::has('users')->where('status', '<', 2)->get();
 		$temps = collect();
 		foreach ($plans as $plan) {
-			$count = $plan->users()->wherePivot('role', '<', 2)->count();
-			$id = $plan->id;
+			$count 	= $plan->users()->wherePivot('role', '<', 2)->count();
+			$id 	= $plan->id;
 			$temps->push((object)array('id' => $id, 'count' => $count));
 		}
 		//sort temps theo so nguoi tham gia
@@ -37,15 +37,14 @@ class PageController extends Controller
 			$sortedPlans->push($plan);
 		}
 		// lay 10
-		$sortedPlans = $sortedPlans->take(10);
-
-		$slides = Slide::all();
+		$sortedPlans 	= $sortedPlans->take(10);
+		$slides 		= Slide::all();
 		return view('hottest-plans',compact('slides', 'sortedPlans'));//khi thành công thì sẽ đưa ra view index
 	}
 
 	public function latestUsers(){
 		// put this in UserController
-		$users = User::orderBy('created_at', 'desc')
+		$users 	= User::orderBy('created_at', 'desc')
 		->take(10)
 		->get();
 		$slides = Slide::all();

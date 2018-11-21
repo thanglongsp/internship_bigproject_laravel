@@ -14,36 +14,6 @@ class UserController extends Controller
     {
         $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -53,8 +23,6 @@ class UserController extends Controller
      */
     public function show($id)
     {   
-        // if ($id != Auth::id())
-        //     return redirect('/');
         $user = User::find($id);
         return view('users.show', compact('user'));
     }
@@ -79,20 +47,15 @@ class UserController extends Controller
      */
     public function update(UpdateAccountRequest $request, $id)
     {
-        $user        = User::find($id);
-        $user->name  = $request->get('inputName');
-        $user->email = $request->get('inputEmail');
-        $user->gender = $request->get('inputGender');
+        $user           = User::find($id);
+        $user->name     = $request->get('inputName');
+        $user->email    = $request->get('inputEmail');
+        $user->gender   = $request->get('inputGender');
         $birthday = date_create_from_format('m/d/Y', $request->get('birthday'));
 
-        if ($birthday != null) {
-            // dd($birthday);
-            // dd($request->get('birthday'));
+        if ($birthday != null)
             $user->birthday = $birthday;
-        }
         $user->phone_number = $request->get('phone_number');
-
-        // $user->password = bcrypt( $request->get('inputPassword'));
 
         // Update mật khẩu ...
         if ($request->get('inputPassword') != null && $request->get('inputPassword') == $request->get('inputPassword_confirmation')) {
@@ -121,7 +84,7 @@ class UserController extends Controller
 
     public function myJoineds($id)
     {
-        $user = User::find($id);
+        $user   = User::find($id);
         $joined = $user->plans()->wherePivot('role', 1)->paginate(5);
 
         return view('users.myjoineds', compact('joined', 'user'));
@@ -133,15 +96,5 @@ class UserController extends Controller
         $mine = $user->plans()->wherePivot('role', 0)->paginate(5);
 
         return view('users.myplans', compact('mine', 'user'));
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

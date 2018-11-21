@@ -11,7 +11,7 @@ use App\User;
 use App\Request as JoinRequest;
 use Carbon\Carbon; 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;  
 use Illuminate\Support\Facades\DB;
 
 class PlanController extends Controller
@@ -44,7 +44,7 @@ class PlanController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     * save plan
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -78,7 +78,6 @@ class PlanController extends Controller
         for ($i = 0; $i < sizeof($data); $i++) {
             $road_controller->store($plan->id, $data[$i]);
         }
-
         // TODO:
         // get current user, then
         // attach the plan to that user in the pivot table
@@ -90,38 +89,33 @@ class PlanController extends Controller
 
     /**
      * Display the specified resource.
-     *
+     * show plan
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {   
-        $plan      = Plan::find($id);
-        
+        $plan           = Plan::find($id);
         if($plan == null) 
             return redirect()->route('home');
+        $all_users      = $plan->users;
+        $number_user    = $plan->users()->wherePivot('role', '<', 2)->count();
+        $number_follow  = $plan->users()->wherePivot('role', 2)->count() + $number_user;
+        $user           = $plan->users()->wherePivot('role', 0)->first();
 
-        $all_users = $plan->users;
-
-        $number_user   = $plan->users()->wherePivot('role', '<', 2)->count();
-        $number_follow = $plan->users()->wherePivot('role', 2)->count() + $number_user;
-        $user          = $plan->users()->wherePivot('role', 0)->first();
-        // dd($user)    ;
         // to call relationship
-        $auth_user     = User::find(Auth::id());
-        $comments  = $plan->comments->where('parent_id', null)->sortBy('created_at');
-        $start     = Road::where('plan_id', $id)->where('order_number', 1)->get();
-        $waypoints = Road::where('plan_id', $id)->get();
-
+        $auth_user      = User::find(Auth::id());
+        $comments       = $plan->comments->where('parent_id', null)->sortBy('created_at');
+        $start          = Road::where('plan_id', $id)->where('order_number', 1)->get();
+        $waypoints      = Road::where('plan_id', $id)->get();
         $current_time = Carbon::now();
-        //dd($comments);
         return view('plans.show', compact('plan', 'comments', 'user', 'auth_user', 'start', 'waypoints', 'current_time', 'number_user',
             'number_follow'));
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
+     * edit plan
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -129,32 +123,18 @@ class PlanController extends Controller
     {
         $plan         = Plan::find($id);
         $current_time = Carbon::now();
-
-        //dd($number_follow);
         return view('plans.edit', compact('plan'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
+    // Update plan'banner
     public function updateBanner(Request $request)
     {
-        if ($request->hasFile('plan_photo')) {
             $file = $request->file('plan_photo');
             $file->move('images/plans', $request->banner_name);
             return redirect()->route('plans.edit', $request->plan_id);
-        }
     }
 
+    // update plan'name
     public function updatePlanName(Request $request)
     {   
         $plan       = Plan::find($request->plan_id);
@@ -163,28 +143,27 @@ class PlanController extends Controller
         return redirect()->route('plans.edit', $request->plan_id);
     }
 
+    // update plan'route
     public function updateRoute(Request $request) 
     {
-        $road_stamp = Road::all()->where('plan_id', $request->plan_id)->where('order_number', $request->order_number)->toArray();
-        $id = $road_stamp[1]['id'];
-        $road = Road::find($id);
+        $road_stamp         = Road::where('plan_id', $request->plan_id)->where('order_number', $request->order_number)->get();
+        $id                 = $road_stamp[0]['id'];
+        $road               = Road::find($id);
         $road->start_place  = $request->start_place;
         $road->start_time   = $request->start_time;
         $road->end_place    = $request->end_place;
         $road->end_time     = $request->end_time;
         $road->vehicle      = $request->vehicle;
         $road->action       = $request->action;
-
         $road->save();
     }
 
+    // add route to plan
     public function addRoute(Request $request)
     {
 
-        $order_number = Road::where('plan_id',$request->plan_id)->count();
-
-        $road = new Road;
-
+        $order_number       = Road::where('plan_id',$request->plan_id)->count();
+        $road               = new Road;
         $road->plan_id      = $request->plan_id;
         $road->order_number = $order_number + 1;
         $road->start_place  = $request->start_place;
@@ -193,26 +172,26 @@ class PlanController extends Controller
         $road->end_time     = $request->end_time;
         $road->vehicle      = $request->vehicle;
         $road->action       = $request->action;
-
         $road->save();
     }
 
+    // delete plan'route
     public function deleteRoute(Request $request)
     {
-
         $order_number = Road::where('plan_id',$request->plan_id)->count();
         $road = Road::where('order_number', $order_number)->delete();
     }
 
     /**
      * Remove the specified resource from storage.
-     *
+     *  delete plan
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //permanently deletion
+        $id   = $request->plan_id; 
         $plan = Plan::find($id);
         $plan->comments()->where('parent_id','<>',null)->forceDelete();
         $plan->comments()->forceDelete();
@@ -226,6 +205,7 @@ class PlanController extends Controller
         return redirect()->route('plans.index');
     }
 
+    // manage plan's joinner
     public function managePeople($id)
     {
         $plan          = Plan::find($id);
@@ -243,21 +223,21 @@ class PlanController extends Controller
         $start         = Road::where('plan_id', $id)->where('order_number', 1)->get();
         $waypoints     = Road::where('plan_id', $id)->get();
 
-        $current_time = Carbon::now();
+        $current_time  = Carbon::now();
         return view('plans.joiner', compact('roads', 'requests', 'plan', 'user', 'comments', 'start', 'waypoints', 'current_time', 'participants'));
     }
 
+    // search plan
     public function search(Request $request) 
     {
-        $slides = Slide::all();
+        $slides     = Slide::all();
 
-        if ($request->has('search')) {
-            $plans = Plan::search($request->input('search'))->get();
-        }
-        // dd($plans);
+        if ($request->has('search'))
+            $plans  = Plan::search($request->input('search'))->get();
         return view('plans.search', compact('plans', 'slides'));
     }
 
+    // Kick out joinner 
     public function kick(Request $request, $id)
     {
         $plan = Plan::find($id);
@@ -266,6 +246,7 @@ class PlanController extends Controller
         return $this->managePeople($id);
     }
 
+    // accept request join
     public function storeRequest(Request $request, $id, $userId){
         $reqCon = new RequestController;
         $reqCon->store($request, $id);
@@ -273,59 +254,70 @@ class PlanController extends Controller
         return redirect()->route('plans.show', $id);
     }
 
+    // follow plan
     public function follow(Request $request, $id, $userId){
-        $plan = Plan::find($id);
-        $hasRole = $plan->users()->where('user_id', $userId)->get();
+        $plan       = Plan::find($id);
+        $hasRole    = $plan->users()->where('user_id', $userId)->get();
         // dd($hasRole);
 
         if(sizeof($hasRole) == 0) {
-            $user = User::find(Auth::id());
+            $user   = User::find(Auth::id());
             $user->plans()->attach($plan->id, ['role' => 2]);
         }
         return redirect()->route('plans.show', $id);
     }
 
+    // cancel request join
     public function unJoinRq($id){
-        $stamp = DB::table('requests')->where('plan_id', $id)->where('user_id', Auth::id())->get()->toArray();
+        $stamp      = DB::table('requests')->where('plan_id', $id)->where('user_id', Auth::id())->get()->toArray();
         $unFollowRq = DB::table('requests')->where('id', $stamp[0]->id)->delete();
         return redirect()->route('plans.show', $id);
     }
+
+    // cancel follow
     public function unFollowRq($id){
-        $stamp = DB::table('plan_user')->where('plan_id', $id)->where('user_id', Auth::id())->get()->toArray();
-        $unJoinRq = DB::table('plan_user')->where('id', $stamp[0]->id)->delete();
+        $stamp      = DB::table('plan_user')->where('plan_id', $id)->where('user_id', Auth::id())->get()->toArray();
+        $unJoinRq   = DB::table('plan_user')->where('id', $stamp[0]->id)->delete();
         return redirect()->route('plans.show', $id);
     }
+
+    // turn on plan
     public function turnOnPlan($id){
-        $plan = Plan::find($id);
-        $plan->status = 1;
+        $plan           = Plan::find($id);
+        $plan->status   = 1;
         $plan->save();
         return redirect()->route('plans.show', $id);
     }
+
+    // turn off plan
     public function turnOffPlan($id){
-        $plan = Plan::find($id);
-        $plan->status = 0;
+        $plan           = Plan::find($id);
+        $plan->status   = 0;
         $plan->save();
         return redirect()->route('plans.show', $id);
     }
+
+    // accept request join
     public function accept(Request $request, $id, $userId){
         //update request
-        $jRequest = JoinRequest::find($request->request_id);
-        $jRequest->status = 1;
+        $jRequest           = JoinRequest::find($request->request_id);
+        $jRequest->status   = 1;
         $jRequest->save();
 
         //update role
-        $plan = Plan::find($id);
-        $user = $plan->users()->where('user_id', $userId)->first();
-        $user->pivot->role = 1;
+        $plan               = Plan::find($id);
+        $user               = $plan->users()->where('user_id', $userId)->first();
+        $user->pivot->role  = 1;
         $user->pivot->save();
         // dd($plan->users);
         return $this->managePeople($id);
     }
 
+    // deny request join
     public function deny(Request $request, $id, $userId){
         //update request
-        $jRequest = JoinRequest::find($request->request_id);
-        $jRequest->status = 2;
+        $jRequest           = JoinRequest::find($request->request_id);
+        $jRequest->status   = 2;
         $jRequest->save();
         return $this->managePeople($id);
     }

@@ -7,7 +7,7 @@ function getTableContent() {
         row = rows[i];
         row_data = getRowContent(row);
 
-        // add order_number to row 
+        // add order_number to row  
         row_data['order_number'] = rows.length - i;
         table_data.push(row_data);
     }

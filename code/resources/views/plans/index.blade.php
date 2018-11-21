@@ -8,12 +8,12 @@
         <div class='col-sm-2'>
             <div class="card">
                 <div class="card-header">
-                    Bạn nên xem
+                    You can see :
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{action('PageController@index')}}">10 kế hoạch mới nhất</a></li>
-                    <li class="list-group-item"><a href="{{action('PageController@hottestPlans')}}">10 kế hoạch hot nhất</a></li>
-                    <li class="list-group-item"><a href="{{action('PageController@latestUsers')}}">10 người dùng mới nhất</a></li>
+                    <li class="list-group-item"><a href="{{action('PageController@index')}}">10 new plans</a></li>
+                    <li class="list-group-item"><a href="{{action('PageController@hottestPlans')}}">10 hot plans</a></li>
+                    <li class="list-group-item"><a href="{{action('PageController@latestUsers')}}">10 new users</a></li>
                 </ul>
             </div>
         </div>
@@ -25,13 +25,13 @@
                         <div class="row">
                             <div class="col-sm-3"><img src="{{asset('images/plans/'.$plan->picture)}}" width="100%" style="margin-bottom: 5px" ></div>
                             <div class="col-sm-9">
-                                <p class="card-text">Thời gian bắt đầu: {{$plan->start_time}}</p>
-                                <p class="card-text">Thời gian kết thúc: {{$plan->end_time}}</p>
-                                <p class="card-text">Số lượng người: </p>
-                                <p class="card-text">Trạng thái: {{$plan->status}}</p>
+                                <p class="card-text">Start time : {{$plan->start_time}}</p>
+                                <p class="card-text">End time : {{$plan->end_time}}</p>
+                                <p class="card-text">Number people : </p>
+                                <p class="card-text">Status : {{$plan->status}}</p>
                             </div>
                         </div>
-                        <a href="{{route('plans.show',$plan->id)}}" class="btn btn-primary">Xem thêm</a>
+                        <a href="{{route('plans.show',$plan->id)}}" class="btn btn-primary">More ... </a>
                     </div>
                 </div>
             @endforeach
