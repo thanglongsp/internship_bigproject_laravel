@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlanUser extends Model
 {
-    // Test1 bbb
+    // Test1 aaa
     public $timestamps = false;
     protected $table = "plan_user";
 }
