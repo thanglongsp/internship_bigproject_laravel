@@ -11,7 +11,7 @@ class Plan extends Model
 
     /**
      * Get the index name for the model.
-     *
+     * test 1
      * @return string
      */
     public function searchableAs()
